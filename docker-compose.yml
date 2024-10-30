@@ -1,0 +1,36 @@
+version: "3.7"
+services:
+  redis-master:
+    image: redis:latest
+    hostname: redis-master
+    volumes:
+      - redis_master:/data
+    ports:
+      - "6379:6379"
+
+  redis-slave:
+    image: redis:latest
+    hostname: redis-slave
+    volumes:
+      - redis_slave:/data
+    ports:
+      - "6479:6379"
+    command: redis-server --slaveof redis-master 6379
+
+  redis-proxy:
+    image: redis-proxy
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: /config/config.json
+    depends_on:
+      - redis-master
+      - redis-slave
+    ports:
+      - "6380:6380"
+    volumes:
+      - ./config/example_config.json:/config/config.json
+
+volumes:
+  redis_master:
+  redis_slave:

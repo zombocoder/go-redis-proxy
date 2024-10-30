@@ -1,0 +1,9 @@
+[
+  {
+    "listen": 6380,
+    "master": { "host": "redis-master", "port": 6379 },
+    "slave": [
+      { "host": "redis-slave", "port": 6379 }
+    ]
+  }
+]

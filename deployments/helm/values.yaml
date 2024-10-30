@@ -1,0 +1,32 @@
+replicaCount: 1
+
+image:
+  repository: redis-proxy
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  ports:
+    - name: redis-port-1
+      port: 6377
+      targetPort: 6377
+    - name: redis-port-2
+      port: 6378
+      targetPort: 6378
+
+# Mount your config.json file content here
+config:
+  redisConfig: |
+    [
+      {
+        "listen": 6377,
+        "master": { "host": "host01", "port": 6377 },
+        "slave": [{ "host": "host02", "port": 6380 }]
+      },
+      {
+        "listen": 6378,
+        "master": { "host": "host01", "port": 6378 },
+        "slave": [{ "host": "host02", "port": 6380 }, { "host": "host03", "port": 6380 }]
+      }
+    ]

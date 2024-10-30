@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-proxy
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: redis-proxy
+  template:
+    metadata:
+      labels:
+        app: redis-proxy
+    spec:
+      containers:
+        - name: redis-proxy
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "/config/config.json"  # Path to config file inside container
+          ports:
+            - containerPort: 6377
+            - containerPort: 6378
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config/config.json
+              subPath: config.json
+      volumes:
+        - name: config-volume
+          configMap:
+            name: redis-proxy-config
