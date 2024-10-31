@@ -2,8 +2,8 @@ name: Publish Helm Chart
 
 on:
   push:
-    paths:
-      - "deployments/**"
+    # paths:
+    #   - "deployments/**"
     # tags:
     #   - "v*.*.*"
 
@@ -27,4 +27,4 @@ jobs:
         uses: stefanprodan/helm-gh-pages@v1.4.1
         with:
           token: ${{ secrets.DEPLOY_TOKEN }}
-          charts_dir: ./deployments/helm
+          charts_dir: ./deployments
