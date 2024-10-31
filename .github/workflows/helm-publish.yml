@@ -19,7 +19,7 @@ jobs:
 
       - name: Package Helm Chart
         run: |
-          helm package deployments/redis-proxy --destination ./packages
+          helm package deployments/helm --destination ./packages
 
       - name: Upload to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
