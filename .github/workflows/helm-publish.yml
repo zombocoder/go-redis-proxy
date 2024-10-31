@@ -2,8 +2,10 @@ name: Publish Helm Chart
 
 on:
   push:
-    tags:
-      - "v*.*.*"
+    paths:
+      - "deployments/**"
+    # tags:
+    #   - "v*.*.*"
 
 jobs:
   package-and-publish:
@@ -21,13 +23,8 @@ jobs:
         run: |
           helm package deployments/helm --destination ./packages
 
-      - name: Update Helm Repository Index
-        run: |
-          cd ./packages
-          helm repo index . --url https://zombocoder.github.io/redis-proxy
-
       - name: Publish Helm charts
         uses: stefanprodan/helm-gh-pages@v1.4.1
         with:
           token: ${{ secrets.DEPLOY_TOKEN }}
-          charts_dir: ./packages
+          charts_dir: ./deployments/helm
