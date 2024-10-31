@@ -1,0 +1,34 @@
+name: Publish Helm Chart
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  package-and-publish:
+    name: Package and Publish Helm Chart
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+
+      - name: Package Helm Chart
+        run: |
+          helm package deployments/redis-proxy --destination ./packages
+
+      - name: Upload to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./packages
+          publish_branch: gh-pages
+
+      - name: Update Helm Repository Index
+        run: |
+          cd packages
+          helm repo index . --url https://zombocoder.github.io/redis-proxy
