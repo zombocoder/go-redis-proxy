@@ -28,3 +28,4 @@ jobs:
         with:
           token: ${{ secrets.DEPLOY_TOKEN }}
           charts_dir: ./deployments
+          target_dir: ./charts
