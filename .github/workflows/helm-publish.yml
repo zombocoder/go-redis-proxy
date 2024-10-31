@@ -21,12 +21,11 @@ jobs:
         run: |
           helm package deployments/helm --destination ./packages
 
-      - name: Upload to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Publish Helm charts
+        uses: stefanprodan/helm-gh-pages@v1.4.1
         with:
-          github_token: ${{ secrets.DEPLOY_TOKEN }}
-          publish_dir: ./packages
-          publish_branch: gh-pages
+          token: ${{ secrets.DEPLOY_TOKEN }}
+          charts_dir: ./packages
 
       - name: Update Helm Repository Index
         run: |
