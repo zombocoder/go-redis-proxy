@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  redis-proxy:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-10-31T10:39:48.531026546Z"
+    description: A Helm chart for deploying a Redis Proxy
+    digest: d2b17c307f00dbdaeadf409e687a13e18e011dd8b0ee660be4be7c6df39bba23
+    name: redis-proxy
+    type: application
+    urls:
+    - https://zombocoder.github.io/go-redis-proxy/charts/redis-proxy-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-10-31T10:39:48.530682664Z"
