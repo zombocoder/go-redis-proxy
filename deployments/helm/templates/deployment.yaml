@@ -17,7 +17,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
-            - "/config/config.json"  # Path to config file inside container
+            - "/config/config.json" # Path to config file inside container
           ports:
             - containerPort: 6377
             - containerPort: 6378

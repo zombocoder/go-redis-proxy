@@ -4,4 +4,4 @@ metadata:
   name: redis-proxy-config
 data:
   config.json: |
-    {{ .Values.config.redisConfig | indent 4 }}
+{{ .Values.config.redisConfig | indent 4 }}

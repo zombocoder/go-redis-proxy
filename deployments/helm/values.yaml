@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: redis-proxy
+  repository: zombocoder/redis-proxy
   tag: "latest"
   pullPolicy: IfNotPresent
 
@@ -27,6 +27,6 @@ config:
       {
         "listen": 6378,
         "master": { "host": "host01", "port": 6378 },
-        "slave": [{ "host": "host02", "port": 6380 }, { "host": "host03", "port": 6380 }]
+        "slave": [{ "host": "host02", "port": 6380 }]
       }
     ]
