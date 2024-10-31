@@ -13,7 +13,7 @@ import (
 
 const CLIENT_BUFFER_SIZE = 4096             // Buffer size for client commands
 const REDIS_BUFFER_SIZE = 32 * 1024 * 1024  // 32 MB buffer size for Redis responses
-const CONNECTION_TIMEOUT = 10 * time.Second // Timeout for client connections
+const CONNECTION_TIMEOUT = 30 * time.Second // Timeout for client connections
 
 // Adjust buffer dynamically based on expected size
 func AdjustBufferSize(size int) []byte {
@@ -79,7 +79,11 @@ func HandleConnection(conn net.Conn, config ServerConfig) {
 
 	clientBuf := make([]byte, CLIENT_BUFFER_SIZE)
 	redisBuf := AdjustBufferSize(REDIS_BUFFER_SIZE)
-	conn.SetReadDeadline(time.Now().Add(CONNECTION_TIMEOUT))
+	err = conn.SetReadDeadline(time.Now().Add(CONNECTION_TIMEOUT))
+	if err != nil {
+		log.Println("Error setting read deadline:", err)
+		return
+	}
 	for {
 		n, err := conn.Read(clientBuf)
 		if err != nil {
@@ -108,7 +112,11 @@ func HandleConnection(conn net.Conn, config ServerConfig) {
 			log.Printf("Routing write command to master: '%s' to '%s'\n", command, targetConn.RemoteAddr())
 		}
 
-		targetConn.SetWriteDeadline(time.Now().Add(CONNECTION_TIMEOUT))
+		err = targetConn.SetWriteDeadline(time.Now().Add(CONNECTION_TIMEOUT))
+		if err != nil {
+			log.Println("Error setting write deadline:", err)
+			break
+		}
 		_, err = targetConn.Write(clientBuf[:n])
 		if err != nil {
 			log.Printf("Error writing to %s: %v\n", targetConn.RemoteAddr(), err)
