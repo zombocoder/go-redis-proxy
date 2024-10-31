@@ -21,3 +21,6 @@
 # vendor/
 
 ignore.txt
+
+# Binary file
+redis-proxy
